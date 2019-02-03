@@ -1,0 +1,18 @@
+{
+  "name": "vainilla",
+  "version": "0.0.1",
+  "description": "vanilla javascript powered blog",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "repository": {},
+  "author": "Pedro E. Palau Isaac",
+  "dependencies": {
+    "express": "^4.16.4",
+    "serve-index": "^1.9.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}

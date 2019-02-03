@@ -1,0 +1,47 @@
+<div class="site__archive">
+  <div class="site__blog__container">
+    <% if (variables.posts) { %>
+      <% variables.posts.map((post) => { %>
+        <article class="site__post">
+          <header class="site__post__info">
+            <h2 class="site__post__title">
+              <%= post.title %>
+            </h2>
+            <% if (post.draft) { %>
+              <p class="site__post__abstract">
+                <%= post.draft %>
+              </p>
+            <% } %>
+          </header>
+          <div class="site__post__about">
+            <div class="site__post__posted-author"></div>
+            <div class="site__post__posted-information">
+              <% if (post.author) { %>
+                <span class="site__post__author">
+                  <% if (post.author) { %>
+                    <a class="site__author__avatar" href="#">
+                      <div class="author__avatar">
+                        <img src="<%= post.avatar %>" />
+                      </div>
+                    </a>
+                  <% } %>
+                  <a href="#" class="site__post__relative author__link"><%= post.author %></a>
+                </span>
+                <% if (post.date) { %>
+                  on
+                  <span class="site__post__posted">
+                    <%= post.date %>
+                  </span>
+                <% } %>
+              <% } else { %>
+              <% } %>
+            </div>
+          </div>
+          <a href="<%= post.link %>" class="site__post__readmore" rel="bookmark">
+            Read more
+          </a>
+        </article>
+      <% }) %>
+    <% } %>
+  </div>
+</div>
