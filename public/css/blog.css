@@ -7,12 +7,14 @@
   --color-muted: #919191;
   --background-light: #ffffff;
   --background-success: #08904c;
+  --background-gray: #fafafa;
   --breakpoint-xs: 0px;
   --breakpoint-sm: 576px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 992px;
   --breakpoint-xl: 1200px;
   --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-family-serif: "Alegreya", serif;
   --font-family-mono: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
@@ -41,7 +43,6 @@ body {
   line-height: 1.5;
   color: #212529;
   text-align: left;
-  background-color: #f9f9f9;
 }
 
 html, body {
@@ -360,7 +361,7 @@ template {
 
 @media (min-width: 1200px) {
   .site__container {
-    max-width: 1140px;
+    max-width: 1040px;
   }
 }
 
@@ -498,7 +499,6 @@ template {
 
 .site__header {
   padding: 1.5em 0;
-  box-shadow: 0 1px 0 rgba(0,0,0,0.071);
   background-color: var(--background-light);
 }
 
@@ -557,19 +557,21 @@ ul.site__links.inline > li + li {
   padding-left: 0.7em;
 }
 
-.site__main {
-  padding: 2em;
+.site__blog {
+  position: relative;
 }
 
-.site__blog {
-  padding: 2.1rem 1.05rem 4.9rem;
-  position: relative;
+.site__archive {
+  padding: 4em 1.05em 4.9em;
+  background-color: var(--background-gray);
 }
 
 .site__blog__container {
   max-width: 36.4rem;
   margin: 0px auto;
   position: relative;
+  padding-top: 2em;
+  padding-bottom: 5em;
 }
 
 .site__archive .site__post {
@@ -581,6 +583,9 @@ ul.site__links.inline > li + li {
   margin-top: 2.1rem;
   margin-bottom: 1.05rem;
   letter-spacing: -0.0075em;
+  font-family: var(--font-family-serif);
+  font-weight: 700;
+  font-size: 1.815rem;
 }
 
 .site__archive .site__post .site__post__abstract {
@@ -672,9 +677,22 @@ ul.site__links.inline > li + li {
   }
 }
 
+.site__post.single .site__blog__header {
+  text-align: left;
+  padding: 1em 0 2em;
+}
+
 .site__post.single .site__post__title {
   margin-bottom: 1.75rem;
-  font-size: 2rem;
+  font-size: 2.5rem;
+  font-family: var(--font-family-serif);
+  line-height: 1.15;
+}
+
+.site__post.single .site__post__draft {
+  font-size: 1.215rem;
+  color: var(--color-muted);
+  margin-bottom: 1.5em;
 }
 
 /* content */
@@ -736,10 +754,8 @@ ul.site__links.inline > li + li {
 }
 
 .site__footer__bottom {
-  margin-top: 32px;
-  padding-top: 24px;
-  padding-bottom: 24px;
-  border-top: 1px solid #ddd;
+  margin-top: 2em;
+  margin-bottom: 3em;
 }
 
 @media (min-width: 768px) {
