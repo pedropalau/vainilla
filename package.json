@@ -6,7 +6,8 @@
   "scripts": {
     "start": "npm run start:dev",
     "start:dev": "nodemon server.js",
-    "start:prod": "cross-env NODE_ENV=production node server.js"
+    "start:prod": "cross-env NODE_ENV=production node server.js",
+    "deploy": "gh-pages-deploy"
   },
   "repository": {},
   "author": "Pedro E. Palau Isaac",
@@ -16,6 +17,8 @@
   },
   "devDependencies": {
     "browser-sync": "^2.26.3",
-    "nodemon": "^1.18.9"
+    "gh-pages-deploy": "^0.5.1",
+    "nodemon": "^1.18.9",
+    "rimraf": "^2.6.3"
   }
 }
