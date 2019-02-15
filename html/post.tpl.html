@@ -1,12 +1,45 @@
-<article class="site__post single">
-  <div class="site__container">
-    <div class="site__blog__container">
-      <h1 class="site__post__title">
-        <%= variables.post.title %>
-      </h1>
-      <div class="site__post__body content">
-        <%= variables.post.body %>
+<div class="site__container">
+  <article class="site__post single">
+    <div class="site__container">
+      <div class="site__blog__container">
+        <div class="site__blog__header">
+          <h1 class="site__post__title">
+            <%= variables.post.title %>
+          </h1>
+          <div class="site__post__draft">
+            <%= variables.post.draft %>
+          </div>
+          <div class="site__post__about">
+            <div class="site__post__posted-author"></div>
+            <div class="site__post__posted-information">
+              <% if (variables.post.author) { %>
+                <span class="site__post__author">
+                  <% if (variables.post.author) { %>
+                    <a class="site__author__avatar" href="#">
+                      <div class="author__avatar">
+                        <img src="<%= variables.post.avatar %>" />
+                      </div>
+                    </a>
+                  <% } %>
+                  <a href="#" class="site__post__relative author__link">
+                    <%= variables.post.author %>
+                  </a>
+                </span>
+                <% if (variables.post.date) { %>
+                  on
+                  <span class="site__post__posted">
+                    <%= variables.post.date %>
+                  </span>
+                <% } %>
+              <% } else { %>
+              <% } %>
+            </div>
+          </div>
+        </div>
+        <div class="site__post__body content">
+          <%= variables.post.body %>
+        </div>
       </div>
     </div>
-  </div>
-</article>
+  </article>
+</div>
