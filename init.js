@@ -6,3 +6,5 @@ const blog = new Blog({
   ...settings,
   root: document.getElementById('blog'),
 });
+
+blog.bootstrap();

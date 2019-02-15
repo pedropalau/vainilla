@@ -9,6 +9,7 @@ class Collection extends Component {
   constructor(props) {
     super(props);
     this.nodes = [];
+    this.completed = [];
     this.getFiles = this.getFiles.bind(this);
     this.loadFiles = this.loadFiles.bind(this);
   }
@@ -16,8 +17,12 @@ class Collection extends Component {
   init(onComplete = noop) {
     this.getFiles()
       .then(() => {
-        this.loadFiles();
-        onComplete();
+        this.loadFiles((node) => {
+          this.completed.push(node.name);
+          if (this.completed.length === this.nodes.length) {
+            onComplete();
+          }
+        });
       })
       .catch((error) => console.log(error));
   }
@@ -39,8 +44,6 @@ class Collection extends Component {
 
     const links = this.processDataResponse(data);
 
-    // I prefer to use .map function, instead of
-    // .forEach because the first one is more
     this.nodes = links
       .map(link => {
         const fileUrl = link.getAttribute('href');
@@ -57,7 +60,6 @@ class Collection extends Component {
       })
       .filter((node) => node !== false);
 
-    // sort node posts by date
     this.nodes.sort(this._sortNodesByDate);
   }
 
@@ -67,10 +69,9 @@ class Collection extends Component {
     return [].slice.call(container.getElementsByTagName('a'));
   }
 
-  loadFiles() {
+  loadFiles(onComplete = noop) {
     this.nodes.forEach((node) => {
-      // load the content of the node
-      node.load();
+      node.load(() => onComplete(node));
     });
   }
 
@@ -90,7 +91,6 @@ class Collection extends Component {
       extension,
     } = this.props;
 
-    // the filename to request
     const filename = `${source}/${slug}${extension}`;
 
     request({ url: filename })

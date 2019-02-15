@@ -1,34 +1,37 @@
 import Component from './Component.js';
 import Router from './Router.js';
-import Type from './Type.js';
 import Template from './Template.js';
+import Type from './Type.js';
 
 import keys from './utils/keys.js';
 
-import defaults from './constants/defaults.js';
+import {
+  HOMEPAGE,
+  ARCHIVE,
+  SINGLE,
+  NOT_FOUND,
+} from './constants/constants.js';
 
-const HOMEPAGE = 'front-page';
-const ARCHIVE = 'archive';
-const SINGLE = 'post';
-const NOT_FOUND = 'not-found';
+import { default as defaultProps } from './constants/defaults.js';
 
 class Blog extends Component {
   constructor(props) {
     super(props);
-    this.types = {};
-    this.typesNames = [];
     this.isReady = false;
     this.router = null;
     this.root = props.root || undefined;
-    this.onInitialized = this.onInitialized.bind(this);
-    this.bootstrap();
+    this.types = {};
+    this.typesNames = [];
+    this.bootstrapContentTypes = this.bootstrapContentTypes.bind(this);
+    this.bootstrapRoutes = this.bootstrapRoutes.bind(this);
+    this.bootstrapEvents = this.bootstrapEvents.bind(this);
+    this.bootstrapPlugins = this.bootstrapPlugins.bind(this);
+    this.bootstrapFinal = this.bootstrapFinal.bind(this);
+    this.onTypeInitialized = this.onTypeInitialized.bind(this);
   }
 
   bootstrap() {
     this.bootstrapContentTypes();
-    this.bootstrapRoutes();
-    this.bootstrapEvents();
-    this.bootstrapPlugins();
   }
 
   bootstrapContentTypes() {
@@ -49,8 +52,9 @@ class Blog extends Component {
         contentParser,
         extension,
         navigationHash,
-        onInitialized: this.onInitialized,
+        onInitialized: this.onTypeInitialized,
       });
+
       this.typesNames.push(type.name);
     });
   }
@@ -87,14 +91,19 @@ class Blog extends Component {
     /* @todo */
   }
 
-  onInitialized() {
+  bootstrapFinal() {
+    this.bootstrapRoutes();
+    this.bootstrapEvents();
+    this.bootstrapPlugins();
+  }
+
+  onTypeInitialized() {
     const { types } = this.props;
 
     if (this.typesNames.length === types.length) {
-      // no more types to process
       this.isReady = true;
-      // wait for it... :(
-      setTimeout(() => { this.executeActiveHandler(); }, 1);
+      this.bootstrapFinal();
+      this.executeActiveHandler();
     }
   }
 
@@ -112,56 +121,71 @@ class Blog extends Component {
     const {
       templatesPath,
       templatesExtension,
-      notFoundTemplate,
     } = this.props;
 
-    // variables for the template
-    let variables = {};
-    let type;
-
-    // get the template filename
     let filename;
+    let type;
+    let variables = {};
+
     switch (page) {
-      // an archive page
       case ARCHIVE:
-        type = this.getType(arg1);
-        if (type) {
-          variables.posts = type.collection.nodes;
-          filename = type.templates.archive;
-        }
+        filename = this.renderArchive(page, arg1, arg2, variables);
         break;
 
-      // a single post/page
       case SINGLE:
-        type = this.getType(arg1);
-        const single = this.findNodeBySlug(arg1, arg2);
-        if (type && single) {
-          variables[type.name] = single;
-          filename = type.templates.single;
-        }
+        filename = this.renderSingle(page, arg1, arg2, variables);
         break;
 
-      // the front-page
       case HOMEPAGE:
-        filename = page;
+        filename = this.renderFrontPage(page, arg1, arg2, variables);
         break;
 
-      // error/404
       case NOT_FOUND:
-        filename = notFoundTemplate;
+        filename = this.renderNotFound(page, arg1, arg2, variables);
         break;
     }
 
-    // render the template file with variables
-    if (filename) {
-      const templateFile = `${templatesPath}/${filename}.${templatesExtension}`;
-      Template.render(templateFile, variables, this.root);
+    const templateFile = [
+      templatesPath,
+      `${filename || this.renderNotFound(page, arg1, arg2, variables)}.${templatesExtension}`,
+    ];
+
+    Template.render(templateFile.join('/'), variables, this.root);
+  }
+
+  renderArchive(page, arg1, arg2, variables) {
+    const type = this.getType(arg1);
+    let filename = page;
+
+    if (type) {
+      variables.posts = type.collection.nodes;
+      filename = type.templates.archive;
     }
-    else {
-      // not found
-      const templateFile = `${templatesPath}/${notFoundTemplate}.${templatesExtension}`;
-      Template.render(templateFile, variables, this.root);
+
+    return filename;
+  }
+
+  renderSingle(page, arg1, arg2, variables) {
+    const type = this.getType(arg1);
+    const single = this.findNodeBySlug(arg1, arg2);
+    let filename = page;
+
+    if (type && single) {
+      variables[type.name] = single;
+      filename = type.templates.single;
     }
+
+    return filename;
+  }
+
+  renderFrontPage(page, arg1, arg2, variables) {
+    return page;
+  }
+
+  renderNotFound(page, arg1, arg2, variables) {
+    const { notFoundTemplate } = this.props;
+
+    return notFoundTemplate;
   }
 
   findNodeBySlug(type, slug) {
@@ -171,6 +195,6 @@ class Blog extends Component {
   }
 }
 
-Blog.defaultProps = defaults;
+Blog.defaultProps = defaultProps;
 
 export default Blog;

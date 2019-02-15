@@ -1,5 +1,5 @@
-import Component from './Component.js';
 import Collection from './Collection.js';
+import Component from './Component.js';
 
 import assign from './utils/assign.js';
 import noop from './utils/noop.js';
