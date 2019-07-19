@@ -1,7 +1,7 @@
 {
   "name": "vainilla",
   "version": "0.0.1",
-  "description": "vanilla javascript powered blog",
+  "description": "Vanilla javascript powered blog",
   "license": "MIT",
   "scripts": {
     "start": "npm run start:dev",
