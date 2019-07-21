@@ -1,6 +1,6 @@
 # vainilla
 
-Simple JavaScript-powered blog.
+> Vainilla is a simple JavaScript-powered blog.
 
 ## Development
 
