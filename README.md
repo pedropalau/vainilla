@@ -31,3 +31,11 @@ To deploy run:
 ```
 $ npm run deploy
 ```
+
+## TBD
+
+* [ ] Use SASS to generate the CSS styles
+* [ ] Use Webpack for development process
+* [ ] Improve the ui design
+* [ ] Improve performance
+* [ ] Improve security
